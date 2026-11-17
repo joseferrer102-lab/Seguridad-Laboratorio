@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test de Autoevaluación: Seguridad e Higiene en el Laboratorio</title>
+    <style>
+        :root {
+            --primary-color: #004d40;
+            --primary-light: #00796b;
+            --secondary-color: #f57c00;
+            --bg-color: #eceff1;
+            --card-bg: #ffffff;
+            --text-color: #37474f;
+            --correct-color: #2e7d32;
+            --correct-bg: #e8f5e9;
+            --incorrect-color: #c62828;
+            --incorrect-bg: #ffebee;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .quiz-container {
+            max-width: 800px;
+            width: 100%;
+            background: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            padding: 30px;
+            box-sizing: border-box;
+        }
+
+        header {
+            text-align: center;
+            border-bottom: 3px solid var(--primary-color);
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            margin: 0 0 10px 0;
+            font-size: 24px;
+        }
+
+        .subtitle {
+            color: #607d8b;
+            font-size: 14px;
+            margin: 0;
+        }
+
+        .case-card {
+            background-color: #fafafa;
+            border-left: 5px solid var(--primary-light);
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .case-title {
+            font-weight: bold;
+            color: var(--primary-light);
+            margin-bottom: 8px;
+        }
+
+        .question-block {
+            margin-bottom: 40px;
+            padding-bottom: 25px;
+            border-bottom: 1px solid #cfd8dc;
+        }
+
+        .question-text {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .option-label {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            border: 2px solid #cfd8dc;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 15px;
+        }
+
+        .option-label:hover {
+            border-color: var(--primary-light);
+            background-color: #f1f8e9;
+        }
+
+        .option-label input[type="radio"] {
+            margin-right: 12px;
+            transform: scale(1.2);
+            accent-color: var(--primary-light);
+        }
+
+        /* Classes for feedback states */
+        .option-label.correct {
+            border-color: var(--correct-color);
+            background-color: var(--correct-bg);
+            color: var(--correct-color);
+            font-weight: bold;
+        }
+
+        .option-label.incorrect {
+            border-color: var(--incorrect-color);
+            background-color: var(--incorrect-bg);
+            color: var(--incorrect-color);
+        }
+
+        .feedback-message {
+            margin-top: 12px;
+            padding: 10px 15px;
+            border-radius: 6px;
+            font-size: 14px;
+            display: none;
+            font-weight: 500;
+        }
+
+        .feedback-message.show-correct {
+            display: block;
+            background-color: var(--correct-bg);
+            color: var(--correct-color);
+            border: 1px solid var(--correct-color);
+        }
+
+        .feedback-message.show-incorrect {
+            display: block;
+            background-color: var(--incorrect-bg);
+            color: var(--incorrect-color);
+            border: 1px solid var(--incorrect-color);
+        }
+
+        .btn-submit {
+            display: block;
+            width: 100%;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 15px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            margin-top: 20px;
+        }
+
+        .btn-submit:hover {
+            background-color: var(--primary-light);
+        }
+
+        #result-container {
+            margin-top: 30px;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            display: none;
+        }
+
+        .result-title {
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .result-score {
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--secondary-color);
+            margin-bottom: 15px;
+        }
+
+        .btn-reset {
+            background-color: #546e7a;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-reset:hover {
+            background-color: #37474f;
+        }
+    </style>
+</head>
+<body>
+
+<div class="quiz-container">
+    <header>
+        <h1>Autoevaluación: Seguridad e Higiene Industrial</h1>
+        <p class="subtitle">Identifica con precisión si la situación describe un <strong>Acto Inseguro</strong> o una <strong>Condición Insegura</strong> en el laboratorio.</p>
+    </header>
+
+    <form id="quiz-form">
+        <!-- Pregunta 1 -->
+        <div class="question-block" data-correct="B">
+            <div class="case-card">
+                <span class="case-title">CASO 1: La prisa en el trasvase</span>
+                <p>Sofía, estudiante de bioquímica, necesita medir rápidamente 5 mL de una solución concentrada de ácido clorhídrico. Al no encontrar una propipeta a la mano, decide succionar el líquido directamente con la boca utilizando una pipeta graduada.</p>
+            </div>
+            <div class="question-text">¿Cómo se clasifica la acción de Sofía de pipetear con la boca?</div>
+            <div class="options-container">
+                <label class="option-label"><input type="radio" name="q1" value="A"> A) Condición insegura.</label>
+                <label class="option-label"><input type="radio" name="q1" value="B"> B) Acto inseguro.</label>
+                <label class="option-label"><input type="radio" name="q1" value="C"> C) Incidente menor tolerado.</label>
+            </div>
+            <div class="feedback-message" data-msg-correct="¡Correcto! Pipetear con la boca es un acto inseguro grave; siempre se debe utilizar propipeta o perilla de succión para evitar la ingestión o inhalación de sustancias nocivas." data-msg-incorrect="Incorrecto. Recuerda que es un acto inseguro porque depende de una conducta o decisión humana que transgrede las normas básicas de seguridad."></div>
+        </div>
+
+        <!-- Pregunta 2 -->
+        <div class="question-block" data-correct="A">
+            <div class="case-card">
+                <span class="case-title">CASO 2: El pasillo de emergencias obstruido</span>
+                <p>Durante una práctica de laboratorio de orgánica, se produce una pequeña salpicadura de reactivo corrosivo en el rostro de un alumno. Al intentar correr hacia la ducha y lavaojos de emergencia, el grupo nota que el acceso está bloqueado por cajas de reactivos vacías, una mesa móvil en desuso y mochilas de los estudiantes.</p>
+            </div>
+            <div class="question-text">El hecho de que la ducha de emergencia y el lavaojos estén obstruidos por objetos es una:</div>
+            <div class="options-container">
+                <label class="option-label"><input type="radio" name="q2" value="A"> A) Condición insegura.</label>
+                <label class="option-label"><input type="radio" name="q2" value="B"> B) Práctica estándar de almacenamiento.</label>
+                <label class="option-label"><input type="radio" name="q2" value="C"> C) Acto inseguro de los lesionados.</label>
+            </div>
+            <div class="feedback-message" data-msg-correct="¡Excelente! Los accesos a los equipos de emergencia obstruidos constituyen una condición insegura del entorno que pone en riesgo la atención oportuna de un accidente." data-msg-incorrect="Incorrecto. La obstrucción física de los equipos de emergencia y vías de evacuación en el entorno físico del laboratorio es una condición insegura."></div>
+        </div>
+
+        <!-- Pregunta 3 -->
+        <div class="question-block" data-correct="B">
+            <div class="case-card">
+                <span class="case-title">CASO 3: Trabajo sin barreras de protección</span>
+                <p>Carlos y Ana están calentando una mezcla de reacción que desprende vapores irritantes dentro de la campana de extracción. Deciden no utilizar sus lentes de seguridad ni guantes porque "hace mucho calor" y "solo será un momento".</p>
+            </div>
+            <div class="question-text">La falta de uso del Equipo de Protección Personal (EPP) por decisión de los alumnos se clasifica como:</div>
+            <div class="options-container">
+                <label class="option-label"><input type="radio" name="q3" value="A"> A) Condición insegura.</label>
+                <label class="option-label"><input type="radio" name="q3" value="B"> B) Acto inseguro.</label>
+                <label class="option-label"><input type="radio" name="q3" value="C"> C) Fuerza mayor.</label>
+            </div>
+            <div class="feedback-message" data-msg-correct="¡Así es! No utilizar el EPP requerido para una tarea, a pesar de estar disponible, es un acto inseguro que aumenta drásticamente la probabilidad de lesiones." data-msg-incorrect="Incorrecto. El no portar el EPP que el laboratorio dispone es una decisión y omisión humana, es decir, un acto inseguro."></div>
+        </div>
+
+        <!-- Pregunta 4 -->
+        <div class="question-block" data-correct="A">
+            <div class="case-card">
+                <span class="case-title">CASO 4: El reactivo misterioso</span>
+                <p>Un estudiante termina de usar un solvente y decide trasvasar el excedente a un frasco de vidrio vacío que encontró en la mesa, sin colocarle ninguna etiqueta, nombre de la sustancia, concentración ni pictograma de peligro, dejándolo junto a otros frascos en el estante.</p>
+            </div>
+            <div class="question-text">El reenvasar una sustancia química sin etiquetarla debidamente es considerado un:</div>
+            <div class="options-container">
+                <label class="option-label"><input type="radio" name="q4" value="A"> A) Acto inseguro.</label>
+                <label class="option-label"><input type="radio" name="q4" value="B"> B) Optimización de recursos.</label>
+                <label class="option-label"><input type="radio" name="q4" value="C"> C) Condición insegura del envase.</label>
+            </div>
+            <div class="feedback-message" data-msg-correct="¡Correcto! Reenvasar reactivos sin etiquetarlos es un acto inseguro que propicia confusiones fatales, ingestión o reacciones incompatibles por parte de otros usuarios." data-msg-incorrect="Incorrecto. Omitir el etiquetado reglamentario al realizar un trasvase es un comportamiento incorrecto por parte del usuario, clasificándose como un acto inseguro."></div>
+        </div>
+
+        <!-- Pregunta 5 -->
+        <div class="question-block" data-correct="C">
+            <div class="case-card">
+                <span class="case-title">CASO 5: Vecinos peligrosos en el estante</span>
+                <p>Durante una inspección de seguridad, se observa que en el estante principal de reactivos se encuentran almacenados, juntos y sin barreras de contención, frascos de ácido nítrico (oxidante fuerte) al lado de botellas de etanol y acetona (inflamables).</p>
+            </div>
+            <div class="question-text">El almacenamiento incompatible de sustancias químicas en el laboratorio representa una:</div>
+            <div class="options-container">
+                <label class="option-label"><input type="radio" name="q5" value="A"> A) Práctica de ordenamiento alfabético correcta.</label>
+                <label class="option-label"><input type="radio" name="q5" value="B"> B) Acto inseguro individual del laboratorista.</label>
+                <label class="option-label"><input type="radio" name="q5" value="C"> C) Condición insegura.</label>
+            </div>
+            <div class="feedback-message" data-msg-correct="¡Correcto! El almacenamiento incompatible de reactivos es una condición insegura del entorno que puede generar incendios, explosiones o emanaciones de gases tóxicos ante cualquier sismo o caída." data-msg-incorrect="Incorrecto. La incompatibilidad en el resguardo dentro de los estantes o mobiliario del laboratorio se cataloga como una condición insegura del entorno."></div>
+        </div>
+
+        <!-- Pregunta 6 -->
+        <div class="question-block" data-correct="B">
+            <div class="case-card">
+                <span class="case-title">CASO 6: El "atajo" en la campana de extracción</span>
+                <p>Un estudiante nota que la campana de extracción de gases tiene el extractor apagado y el flujo de aire no funciona. Sin embargo, para no esperar a que la reparen, decide realizar una digestión ácida con desprendimiento de gases nocivos dentro de ella, manteniendo la guillotina (ventana) totalmente abierta.</p>
+            </div>
+            <div class="question-text">¿Qué tipo de fallos de seguridad se combinan en esta situación?</div>
+            <div class="options-container">
+                <label class="option-label"><input type="radio" name="q6" value="A"> A) Únicamente un acto inseguro.</label>
+                <label class="option-label"><input type="radio" name="q6" value="B"> B) Una condición insegura (campana sin flujo) y un acto inseguro (operar en ella sabiendo que falla).</label>
+                <label class="option-label"><input type="radio" name="q6" value="C"> C) Únicamente una condición insegura.</label>
+            </div>
+            <div class="feedback-message" data-msg-correct="¡Correcto! Es una combinación peligrosa: la falla del equipo en las instalaciones es la condición insegura, y la decisión consciente del alumno de trabajar en ella bajo esas condiciones es el acto inseguro." data-msg-incorrect="Incorrecto. El caso involucra tanto un equipo estropeado del laboratorio (condición) como la decisión del estudiante de usarlo a pesar del riesgo (acto)."></div>
+        </div>
+
+        <!-- Pregunta 7 -->
+        <div class="question-block" data-correct="A">
+            <div class="case-card">
+                <span class="case-title">CASO 7: Manipulación de vidrio dañado</span>
+                <p>Al buscar material para montar un sistema de destilación, un alumno encuentra un matraz de balón que tiene una pequeña fisura o "estrella" en la base. Como tiene prisa, decide ignorar el desperfecto y someterlo a calentamiento con mechero.</p>
+            </div>
+            <div class="question-text">Utilizar material de vidrio dañado o fisurado para procesos de calentamiento es un:</div>
+            <div class="options-container">
+                <label class="option-label"><input type="radio" name="q7" value="A"> A) Acto inseguro.</label>
+                <label class="option-label"><input type="radio" name="q7" value="B"> B) Condición insegura inevitable.</label>
+                <label class="option-label"><input type="radio" name="q7" value="C"> C) Procedimiento de rutina.</label>
+            </div>
+            <div class="feedback-message" data-msg-correct="¡Correcto! Usar material defectuoso a sabiendas es un acto inseguro que puede provocar la implosión o rotura del vidrio, liberando sustancias calientes y fragmentos." data-msg-incorrect="Incorrecto. El material en mal estado existía (condición), pero la decisión activa de utilizarlo de forma arriesgada para calentamiento tipifica un acto inseguro."></div>
+        </div>
+
+        <!-- Pregunta 8 -->
+        <div class="question-block" data-correct="A">
+            <div class="case-card">
+                <span class="case-title">CASO 8: El desorden como trampa</span>
+                <p>En la mesa central de trabajo del laboratorio de química orgánica se observan desparramados cuadernos, mochilas, cables de parrillas de calentamiento cruzados, reactivos destapados y material de vidrio sucio amontonado.</p>
+            </div>
+            <div class="question-text">El estado de desorden y falta de limpieza en el área de trabajo se define como una:</div>
+            <div class="options-container">
+                <label class="option-label"><input type="radio" name="q8" value="A"> A) Condición insegura.</label>
+                <label class="option-label"><input type="radio" name="q8" value="B"> B) Costumbre del estudiante.</label>
+                <label class="option-label"><input type="radio" name="q8" value="C"> C) Incidencia del clima.</label>
+            </div>
+            <div class="feedback-message" data-msg-correct="¡Correcto! El desorden, el hacinamiento y la falta de limpieza en las áreas de trabajo constituyen una condición insegura que propicia tropiezos, caídas de reactivos e incendios." data-msg-incorrect="Incorrecto. Las malas condiciones físicas, como la falta de orden, aseo y desorganización de un espacio de trabajo, son condiciones inseguras."></div>
+        </div>
+
+        <!-- Pregunta 9 -->
+        <div class="question-block" data-correct="B">
+            <div class="case-card">
+                <span class="case-title">CASO 9: Descartando reactivos por el desagüe</span>
+                <p>Al finalizar una práctica de identificación de metales pesados, un alumno decide verter las soluciones de cromo y plomo directamente en la tarja (desagüe) para "acabar rápido", a pesar de que existen contenedores especiales de residuos etiquetados.</p>
+            </div>
+            <div class="question-text">La eliminación inapropiada de residuos peligrosos por el desagüe es un:</div>
+            <div class="options-container">
+                <label class="option-label"><input type="radio" name="q9" value="A"> A) Condición insegura del drenaje.</label>
+                <label class="option-label"><input type="radio" name="q9" value="B"> B) Acto inseguro.</label>
+                <label class="option-label"><input type="radio" name="q9" value="C"> C) Incidente natural.</label>
+            </div>
+            <div class="feedback-message" data-msg-correct="¡Así es! Desechar sustancias tóxicas o reactivas por el drenaje es un acto inseguro que contamina el agua y puede generar reacciones peligrosas en las tuberías." data-msg-incorrect="Incorrecto. Tirar desechos químicos indebidamente por el drenaje, ignorando los protocolos, es una acción prohibida que representa un acto inseguro."></div>
+        </div>
+
+        <!-- Pregunta 10 -->
+        <div class="question-block" data-correct="A">
+            <div class="case-card">
+                <span class="case-title">CASO 10: La campana de extracción como almacén permanente</span>
+                <p>Al ingresar al laboratorio, se observa que el interior de la única campana de extracción de gases está repleto de botellas de solventes en desuso, material de vidrio sucio, reactivos antiguos y basura, lo que obstruye las rejillas de ventilación y reduce el espacio de maniobra.</p>
+            </div>
+            <div class="question-text">Que una campana de extracción se encuentre saturada de materiales ajenos que obstruyen su correcto funcionamiento es una:</div>
+            <div class="options-container">
+                <label class="option-label"><input type="radio" name="q10" value="A"> A) Condición insegura.</label>
+                <label class="option-label"><input type="radio" name="q10" value="B"> B) Forma eficiente de almacenamiento.</label>
+                <label class="option-label"><input type="radio" name="q10" value="C"> C) Maniobra de contingencia.</label>
+            </div>
+            <div class="feedback-message" data-msg-correct="¡Excelente! Esta acumulación de objetos altera el flujo de aire y limita el espacio de trabajo seguro, configurando una condición insegura del entorno de experimentación." data-msg-incorrect="Incorrecto. El estado saturado e incorrectamente utilizado de un espacio de protección como la campana conforma una condición insegura para quien requiera usarla."></div>
+        </div>
+
+        <button type="submit" class="btn-submit" id="submit-btn">Evaluar Respuestas</button>
+    </form>
+
+    <div id="result-container">
+        <div class="result-title" id="result-title"></div>
+        <div class="result-score" id="result-score"></div>
+        <p id="result-feedback"></p>
+        <button class="btn-reset" onclick="resetQuiz()">Intentarlo de nuevo</button>
+    </div>
+</div>
+
+<script>
+    document.getElementById('quiz-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        let score = 0;
+        const totalQuestions = 10;
+        const questionBlocks = document.querySelectorAll('.question-block');
+
+        questionBlocks.forEach((block, index) => {
+            const correctAnswer = block.getAttribute('data-correct');
+            const qNum = index + 1;
+            const selectedInput = block.querySelector(`input[name="q${qNum}"]:checked`);
+            const feedbackMsg = block.querySelector('.feedback-message');
+            const options = block.querySelectorAll('.option-label');
+
+            // Reset classes
+            options.forEach(opt => {
+                opt.classList.remove('correct', 'incorrect');
+            });
+            feedbackMsg.className = 'feedback-message';
+
+            if (selectedInput) {
+                const userAnswer = selectedInput.value;
+
+                if (userAnswer === correctAnswer) {
+                    score++;
+                    feedbackMsg.textContent = feedbackMsg.getAttribute('data-msg-correct');
+                    feedbackMsg.classList.add('show-correct');
+                    
+                    // Highlight selected as correct
+                    selectedInput.parentElement.classList.add('correct');
+                } else {
+                    feedbackMsg.textContent = feedbackMsg.getAttribute('data-msg-incorrect');
+                    feedbackMsg.classList.add('show-incorrect');
+                    
+                    // Highlight selected as incorrect and show correct answer
+                    selectedInput.parentElement.classList.add('incorrect');
+                    options.forEach(opt => {
+                        if(opt.querySelector('input').value === correctAnswer) {
+                            opt.classList.add('correct');
+                        }
+                    });
+                }
+            } else {
+                // If unanswered, show correct answer and alert
+                feedbackMsg.textContent = "Sin responder. " + feedbackMsg.getAttribute('data-msg-incorrect');
+                feedbackMsg.classList.add('show-incorrect');
+                options.forEach(opt => {
+                    if(opt.querySelector('input').value === correctAnswer) {
+                        opt.classList.add('correct');
+                    }
+                });
+            }
+        });
+
+        // Show Results Summary
+        const resultContainer = document.getElementById('result-container');
+        const resultTitle = document.getElementById('result-title');
+        const resultScore = document.getElementById('result-score');
+        const resultFeedback = document.getElementById('result-feedback');
+
+        resultContainer.style.display = 'block';
+        resultScore.textContent = `${score} / ${totalQuestions}`;
+
+        if (score === totalQuestions) {
+            resultTitle.textContent = "🏆 ¡Excelente, puntuación perfecta!";
+            resultFeedback.textContent = "Has demostrado un dominio excepcional identificando actos y condiciones inseguras en laboratorios químicos. ¡Sigue aplicando siempre estas buenas prácticas!";
+            resultContainer.style.backgroundColor = "#e8f5e9";
+            resultContainer.style.border = "2px solid #2e7d32";
+        } else if (score >= 7) {
+            resultTitle.textContent = "👍 ¡Buen trabajo!";
+            resultFeedback.textContent = "La mayoría de tus respuestas son correctas. Revisa los casos en los que fallaste para consolidar la diferencia conceptual y prevenir accidentes en tus prácticas de laboratorio.";
+            resultContainer.style.backgroundColor = "#fff3e0";
+            resultContainer.style.border = "2px solid #f57c00";
+        } else {
+            resultTitle.textContent = "⚠️ Necesitas repasar";
+            resultFeedback.textContent = "Es de vital importancia que comprendas bien la diferencia entre los actos (conductas de riesgo) y las condiciones (fallos de entorno). ¡Revisa el material de la NOM-030-STPS e inténtalo de nuevo!";
+            resultContainer.style.backgroundColor = "#ffebee";
+            resultContainer.style.border = "2px solid #c62828";
+        }
+
+        // Disable further edits before reset
+        document.querySelectorAll('input[type="radio"]').forEach(radio => radio.disabled = true);
+        document.getElementById('submit-btn').disabled = true;
+        document.getElementById('submit-btn').style.opacity = "0.5";
+        
+        // Auto scroll to results
+        resultContainer.scrollIntoView({ behavior: 'smooth' });
+    });
+
+    function resetQuiz() {
+        // Reset form
+        document.getElementById('quiz-form').reset();
+        
+        // Re-enable inputs
+        document.querySelectorAll('input[type="radio"]').forEach(radio => radio.disabled = false);
+        document.getElementById('submit-btn').disabled = false;
+        document.getElementById('submit-btn').style.opacity = "1";
+
+        // Hide Feedbacks and border highlight styles
+        document.querySelectorAll('.feedback-message').forEach(m => {
+            m.style.display = 'none';
+            m.className = 'feedback-message';
+        });
+        document.querySelectorAll('.option-label').forEach(opt => {
+            opt.classList.remove('correct', 'incorrect');
+        });
+
+        // Hide results Summary
+        document.getElementById('result-container').style.display = 'none';
+        
+        // Scroll to top
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+</script>
+
+</body>
+</html>
